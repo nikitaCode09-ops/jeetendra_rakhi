@@ -1,0 +1,1559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Raksha Bandhan - Jeetendra Bhai</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@300;400;500;600;700&family=Rozha+One&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        festive: {
+                            red: '#D90429',
+                            crimson: '#9D0208',
+                            gold: '#FFB703',
+                            amber: '#FB8500',
+                            saffron: '#F48C06',
+                            cream: '#FFF0F5',
+                            maroon: '#640D14'
+                        }
+                    },
+                    fontFamily: {
+                        heading: ['"Rozha One"', 'serif'],
+                        sans: ['Poppins', 'sans-serif'],
+                        handwriting: ['"Dancing Script"', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #FAF0E6;
+            overflow-x: hidden;
+        }
+        .font-festive {
+            font-family: 'Rozha One', serif;
+        }
+        .font-handwriting {
+            font-family: 'Dancing Script', cursive;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 183, 3, 0.3);
+            box-shadow: 0 10px 30px -5px rgba(217, 4, 41, 0.1);
+        }
+        .letter-paper {
+            background-color: #fdfbf7;
+            background-image: radial-gradient(#e5e7eb 0.75px, transparent 0.75px);
+            background-size: 16px 16px;
+            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.15), inset 0 0 40px rgba(217, 119, 6, 0.08);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FFF0F5;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D90429;
+            border-radius: 4px;
+        }
+        /* Pulse Animation for Flame */
+        @keyframes flamePulse {
+            0%, 100% { transform: scale(1) rotate(-2deg); filter: drop-shadow(0 0 8px #FFB703); }
+            50% { transform: scale(1.15) rotate(2deg); filter: drop-shadow(0 0 15px #FB8500); }
+        }
+        .animate-flame {
+            animation: flamePulse 1.2s infinite ease-in-out;
+        }
+        /* Canvas layer behind UI */
+        #bgCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Sound Bar Visualizer Animation */
+        .bar {
+            width: 4px;
+            height: 16px;
+            background-color: #FFB703;
+            animation: bounce 0.6s infinite ease-in-out alternate;
+        }
+        .bar:nth-child(2) { animation-delay: 0.15s; }
+        .bar:nth-child(3) { animation-delay: 0.3s; }
+        .bar:nth-child(4) { animation-delay: 0.45s; }
+        @keyframes bounce {
+            0% { height: 4px; }
+            100% { height: 20px; }
+        }
+
+        /* -------------------------------------------------------------
+         * PREMIUM 3D GIFT WRAP REVEAL ANIMATION STYLES
+         * ------------------------------------------------------------- */
+        #giftOverlay {
+            perspective: 1200px;
+            z-index: 9999;
+        }
+
+        .gift-container {
+            transform-style: preserve-3d;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+
+        .gift-container:hover {
+            transform: scale(1.04) rotateX(4deg) rotateY(-4deg);
+        }
+
+        .gift-container:active {
+            transform: scale(0.98);
+        }
+
+        /* 3D Flaps for Paper Unwrapping */
+        .paper-flap {
+            position: absolute;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(135deg, #b91c1c 0%, #991b1b 50%, #7f1d1d 100%);
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.4);
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease;
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+            z-index: 20;
+        }
+
+        .paper-flap-top {
+            top: 0;
+            transform-origin: top center;
+            border-bottom: 2px solid #FFB703;
+        }
+
+        .paper-flap-bottom {
+            bottom: 0;
+            transform-origin: bottom center;
+            border-top: 2px solid #FFB703;
+        }
+
+        .paper-flap-left {
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 100%;
+            transform-origin: left center;
+            border-right: 2px solid #FFB703;
+        }
+
+        .paper-flap-right {
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            transform-origin: right center;
+            border-left: 2px solid #FFB703;
+        }
+
+        /* Ribbon & Bow Animation */
+        .ribbon-v, .ribbon-h {
+            background: linear-gradient(90deg, #d4af37, #fff3a8, #d4af37);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 25;
+        }
+
+        .bow-knot {
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 30;
+        }
+
+        /* Unwrapping Animation Classes */
+        .unravel-ribbon-v {
+            transform: scaleY(0) rotate(15deg) !important;
+            opacity: 0;
+        }
+
+        .unravel-ribbon-h {
+            transform: scaleX(0) rotate(-15deg) !important;
+            opacity: 0;
+        }
+
+        .unravel-bow {
+            transform: scale(1.8) rotate(45deg) translateY(-50px) !important;
+            opacity: 0;
+        }
+
+        .unfold-top {
+            transform: rotateX(120deg) translateY(-20px) !important;
+            opacity: 0;
+        }
+
+        .unfold-bottom {
+            transform: rotateX(-120deg) translateY(-20px) !important;
+            opacity: 0;
+        }
+
+        .unfold-left {
+            transform: rotateY(-120deg) translateX(-20px) !important;
+            opacity: 0;
+        }
+
+        .unfold-right {
+            transform: rotateY(120deg) translateX(20px) !important;
+            opacity: 0;
+        }
+
+        /* Main Website Entry Animation */
+        .website-entry {
+            animation: websiteScaleUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes websiteScaleUp {
+            0% {
+                opacity: 0;
+                transform: scale(0.92) translateY(30px);
+                filter: blur(8px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+                filter: blur(0);
+            }
+        }
+
+        .gold-pattern-bg {
+            background-image: radial-gradient(#FFB703 1.5px, transparent 1.5px), radial-gradient(#FFB703 1.5px, #D90429 1.5px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+        }
+    </style>
+</head>
+<body class="text-gray-800 relative">
+
+    <!-- PREMIUM 3D GIFT WRAP REVEAL OVERLAY -->
+    <div id="giftOverlay" class="fixed inset-0 bg-slate-950/90 backdrop-blur-xl flex flex-col items-center justify-center p-4 transition-opacity duration-700">
+        
+        <div class="absolute w-80 h-80 sm:w-96 sm:h-96 bg-gradient-to-tr from-amber-500/30 to-rose-600/40 rounded-full blur-3xl animate-pulse"></div>
+
+        <div id="giftBoxContainer" class="gift-container relative w-72 h-72 sm:w-96 sm:h-96 rounded-3xl shadow-2xl gold-pattern-bg border-4 border-amber-300/80 overflow-hidden flex items-center justify-center" onclick="unwrapGift()">
+            
+            <div id="bowKnot" class="bow-knot absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
+                <div class="w-16 h-12 sm:w-20 sm:h-14 bg-gradient-to-br from-amber-300 via-yellow-400 to-amber-600 rounded-full -rotate-45 shadow-lg border border-yellow-200"></div>
+                <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-amber-400 to-yellow-200 rounded-full shadow-2xl border-2 border-white z-10 flex items-center justify-center text-xs text-amber-900 font-bold">
+                    🪔
+                </div>
+                <div class="w-16 h-12 sm:w-20 sm:h-14 bg-gradient-to-bl from-amber-300 via-yellow-400 to-amber-600 rounded-full rotate-45 shadow-lg border border-yellow-200 -ml-4"></div>
+            </div>
+
+            <div id="ribbonV" class="ribbon-v absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-10 sm:w-14"></div>
+            <div id="ribbonH" class="ribbon-h absolute left-0 right-0 top-1/2 -translate-y-1/2 h-10 sm:h-14"></div>
+
+            <div id="flapTop" class="paper-flap paper-flap-top flex items-end justify-center pb-2">
+                <span class="font-handwriting text-lg font-bold text-amber-200 uppercase tracking-wide">FOR <span class="font-handwriting text-2xl capitalize text-yellow-300">Jeetendra Bhai</span></span>
+            </div>
+            <div id="flapBottom" class="paper-flap paper-flap-bottom flex items-start justify-center pt-2">
+                <span class="text-xs font-bold text-amber-200 uppercase tracking-widest opacity-60">HAPPY RAKSHA BANDHAN</span>
+            </div>
+            <div id="flapLeft" class="paper-flap paper-flap-left"></div>
+            <div id="flapRight" class="paper-flap paper-flap-right"></div>
+
+            <div class="absolute inset-0 bg-gradient-to-br from-rose-900 via-red-800 to-festive-crimson flex flex-col items-center justify-center p-6 text-center z-0">
+                <span class="text-5xl mb-2 animate-bounce">🎁</span>
+                <h3 class="font-handwriting text-3xl sm:text-4xl text-amber-200 font-bold">Unwrapping Gift For <span class="font-handwriting text-yellow-300">Jeetendra Bhai</span>...</h3>
+                <p class="text-xs text-amber-100/90 mt-1">Opening your surprise celebration portal!</p>
+            </div>
+
+        </div>
+
+        <div id="giftPrompt" class="mt-8 text-center space-y-2 pointer-events-none transition-all duration-300">
+            <div class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 border border-amber-300/40 text-amber-200 text-sm font-semibold backdrop-blur-md shadow-lg animate-bounce">
+                <span>✨</span> Tap To Unwrap <span class="font-handwriting text-xl text-yellow-300 font-bold px-1">Jeetendra Bhai's</span> Gift <span>✨</span>
+            </div>
+            <p class="text-xs text-amber-100/60">Click or tap the wrapped box to open the website</p>
+        </div>
+
+    </div>
+
+    <!-- Background Petals Canvas -->
+    <canvas id="bgCanvas"></canvas>
+
+    <!-- Main Website Wrapper -->
+    <div id="mainWebsite" class="opacity-0">
+
+        <!-- Navigation Bar -->
+        <nav class="sticky top-0 z-50 glass-card border-b border-amber-200/50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center space-x-3 cursor-pointer" onclick="scrollToSection('hero')">
+                        <span class="text-3xl">🪔</span>
+                        <span class="font-handwriting text-2xl sm:text-3xl text-festive-crimson font-bold tracking-wide">Jeetendra Bhai</span>
+                    </div>
+                    <!-- Desktop Nav -->
+                    <div class="hidden md:flex items-center space-x-4 text-sm font-medium">
+                        <button onclick="scrollToSection('pooja')" class="px-3 py-2 rounded-lg hover:bg-amber-100/70 text-festive-crimson transition flex items-center gap-1">
+                            <span>🪔</span> Virtual Pooja
+                        </button>
+                        <button onclick="scrollToSection('diy-rakhi')" class="px-3 py-2 rounded-lg hover:bg-amber-100/70 text-festive-crimson transition flex items-center gap-1">
+                            <span>🎨</span> DIY Rakhi
+                        </button>
+                        <button onclick="scrollToSection('scratch-card')" class="px-3 py-2 rounded-lg hover:bg-amber-100/70 text-festive-crimson transition flex items-center gap-1">
+                            <span>🎫</span> Scratch & Win
+                        </button>
+                        <button onclick="scrollToSection('coupons')" class="px-3 py-2 rounded-lg hover:bg-amber-100/70 text-festive-crimson transition flex items-center gap-1">
+                            <span>📜</span> Brother Vouchers
+                        </button>
+                        <button onclick="scrollToSection('letter')" class="px-3 py-2 rounded-lg hover:bg-amber-100/70 text-festive-crimson transition flex items-center gap-1">
+                            <span>✉️</span> Wish Letter
+                        </button>
+                        <button onclick="scrollToSection('quiz')" class="px-3 py-2 bg-gradient-to-r from-amber-500 to-festive-red text-white font-semibold rounded-lg shadow hover:opacity-90 transition flex items-center gap-1">
+                            <span>🎯</span> Sibling Quiz
+                        </button>
+                    </div>
+                    <!-- Audio & Replay -->
+                    <div class="flex items-center space-x-2">
+                        <button onclick="replayGiftAnimation()" class="hidden sm:flex px-3 py-1.5 rounded-full bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold shadow transition items-center gap-1">
+                            <span>🎁</span> Wrap Gift
+                        </button>
+                        <button id="audioToggle" onclick="toggleBackgroundAudio()" class="p-2 rounded-full bg-amber-100 text-festive-red hover:bg-amber-200 transition text-sm">
+                            <i class="fas fa-volume-up"></i>
+                        </button>
+                        <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-lg text-festive-crimson hover:bg-amber-100">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Mobile Navigation Menu -->
+            <div id="mobileMenu" class="hidden md:hidden px-4 pt-2 pb-4 space-y-2 bg-white/95 border-b border-amber-200">
+                <button onclick="scrollToSection('pooja')" class="block w-full text-left px-3 py-2 rounded-md text-festive-crimson hover:bg-amber-50 font-medium">🪔 Virtual Pooja</button>
+                <button onclick="scrollToSection('diy-rakhi')" class="block w-full text-left px-3 py-2 rounded-md text-festive-crimson hover:bg-amber-50 font-medium">🎨 DIY Rakhi Studio</button>
+                <button onclick="scrollToSection('scratch-card')" class="block w-full text-left px-3 py-2 rounded-md text-festive-crimson hover:bg-amber-50 font-medium">🎫 Scratch Card</button>
+                <button onclick="scrollToSection('coupons')" class="block w-full text-left px-3 py-2 rounded-md text-festive-crimson hover:bg-amber-50 font-medium">📜 Brother Vouchers</button>
+                <button onclick="scrollToSection('letter')" class="block w-full text-left px-3 py-2 rounded-md text-festive-crimson hover:bg-amber-50 font-medium">✉️ Wish Letter</button>
+                <button onclick="scrollToSection('quiz')" class="block w-full text-left px-3 py-2 rounded-md bg-festive-red text-white font-semibold">🎯 Sibling Quiz Competition</button>
+                <button onclick="replayGiftAnimation()" class="block w-full text-left px-3 py-2 rounded-md bg-amber-500 text-white font-semibold">🎁 Replay Gift Wrap</button>
+            </div>
+        </nav>
+
+        <!-- Main Content Container -->
+        <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-20 space-y-16">
+
+            <!-- Hero Section Dedicated to Jeetendra Bhai -->
+            <section id="hero" class="text-center py-10 sm:py-16 glass-card rounded-3xl p-6 sm:p-12 border-2 border-amber-300 shadow-xl relative overflow-hidden">
+                <div class="absolute -top-10 -right-10 w-40 h-40 bg-amber-300/30 rounded-full blur-2xl"></div>
+                <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-festive-red/20 rounded-full blur-2xl"></div>
+
+                <div class="flex items-center justify-center gap-3 mb-4">
+                    <img src="1786911341131.png" alt="Jeetendra Bhai" class="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover border-2 border-amber-400 shadow-md" onerror="this.style.display='none'">
+                    <span class="inline-flex items-center px-4 py-1.5 rounded-full bg-amber-100 text-festive-crimson text-xs sm:text-sm font-semibold tracking-wider uppercase shadow-sm border border-amber-200">
+                        ✨ Welcome Dearest <span class="font-handwriting text-xl sm:text-2xl text-festive-red font-bold px-1.5 lowercase">Jeetendra Bhai</span> ✨
+                    </span>
+                </div>
+                
+                <h1 class="text-4xl sm:text-6xl md:text-7xl font-festive text-festive-crimson leading-tight mb-4">
+                    Happy Raksha Bandhan, <span class="font-handwriting text-5xl sm:text-7xl md:text-8xl text-festive-amber block sm:inline">Jeetendra Bhai</span>!
+                </h1>
+                
+                <p class="max-w-2xl mx-auto text-base sm:text-lg text-gray-700 leading-relaxed mb-8">
+                    To my wonderful brother <span class="font-handwriting text-2xl font-bold text-festive-crimson">Jeetendra Bhai</span> — thank you for being my constant protector, guide, and best friend. Enjoy your virtual pooja, custom Rakhi, sibling vouchers, and handwritten wish letter!
+                </p>
+
+                <div class="flex flex-wrap justify-center gap-4">
+                    <button onclick="scrollToSection('pooja')" class="px-8 py-3.5 rounded-full bg-gradient-to-r from-festive-red to-festive-amber text-white font-semibold shadow-lg hover:shadow-2xl hover:scale-105 transition transform flex items-center gap-2">
+                        <span>🪔</span> Start Virtual Pooja
+                    </button>
+                    <button onclick="scrollToSection('letter')" class="px-8 py-3.5 rounded-full bg-amber-500 text-white font-semibold shadow-lg hover:bg-amber-600 hover:scale-105 transition transform flex items-center gap-2">
+                        <span>✉️</span> Read My Letter
+                    </button>
+                </div>
+            </section>
+
+            <!-- 1. Virtual 4-Step Pooja Ritual with Jeetendra's Photo & Dhaagon Se Baandhaa YouTube Song -->
+            <section id="pooja" class="glass-card rounded-3xl p-6 sm:p-10 border border-amber-200 shadow-lg relative">
+                <div class="text-center mb-8">
+                    <span class="text-xs font-bold uppercase tracking-widest text-festive-amber">Interactive Ritual</span>
+                    <h2 class="text-3xl sm:text-4xl font-festive text-festive-crimson mt-1">Virtual Pooja For <span class="font-handwriting text-4xl text-festive-amber">Jeetendra Bhai</span></h2>
+                    <p class="text-sm sm:text-base text-gray-600 mt-2">Follow the sacred steps in sequence to perform the complete Raksha Bandhan ceremony on <span class="font-handwriting text-lg text-festive-crimson font-bold">Jeetendra Bhai's</span> photo!</p>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="max-w-xl mx-auto mb-8">
+                    <div class="flex justify-between text-xs font-semibold text-gray-500 mb-2">
+                        <span id="stepLabel1" class="text-festive-red">1. Diya</span>
+                        <span id="stepLabel2">2. Tilak</span>
+                        <span id="stepLabel3">3. Sweet</span>
+                        <span id="stepLabel4">4. Tie Rakhi & Play Song</span>
+                    </div>
+                    <div class="w-full bg-gray-200 h-3 rounded-full overflow-hidden">
+                        <div id="poojaProgressBar" class="bg-gradient-to-r from-amber-400 to-festive-red h-full w-1/4 transition-all duration-500"></div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <!-- Thali Visual Stage with Jeetendra's Framed Photo -->
+                    <div class="relative mx-auto w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-gradient-to-br from-amber-200 via-amber-400 to-amber-600 p-4 shadow-2xl flex items-center justify-center border-4 border-amber-100">
+                        <div class="w-full h-full rounded-full bg-gradient-to-tr from-rose-900 via-red-800 to-festive-crimson p-6 relative flex flex-col items-center justify-center overflow-hidden border-2 border-amber-300">
+                            
+                            <!-- Jeetendra's Photo Portrait & Ritual Canvas -->
+                            <div id="ritualCanvasTarget" class="relative w-44 h-44 sm:w-52 sm:h-52 flex flex-col items-center justify-center text-center">
+                                
+                                <!-- Photo Frame -->
+                                <div class="relative w-36 h-36 sm:w-44 sm:h-44 rounded-full p-1 bg-gradient-to-tr from-amber-300 via-yellow-400 to-amber-600 shadow-xl border-2 border-amber-200 overflow-hidden">
+                                    <img src="Jeetendar.png" alt="Jeetendra Bhai" class="w-full h-full object-cover rounded-full" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300'">
+                                    
+                                    <!-- Tilak Mark overlay on Forehead -->
+                                    <div id="tilakMark" class="hidden absolute top-4 left-1/2 -translate-x-1/2 w-3.5 h-8 bg-gradient-to-b from-red-600 to-red-700 rounded-full shadow-lg transform scale-0 transition-all duration-500 flex items-center justify-center border border-amber-200">
+                                        <div class="w-1.5 h-1.5 bg-yellow-300 rounded-full top-1.5 absolute"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Tie Rakhi Overlay Band across frame -->
+                                <div id="wristRakhi" class="hidden absolute -bottom-1 left-1/2 -translate-x-1/2 transform scale-0 transition-all duration-500 flex items-center justify-center z-20">
+                                    <div class="w-36 h-2 bg-gradient-to-r from-red-500 via-yellow-400 to-red-500 rounded-full shadow-md"></div>
+                                    <div class="w-9 h-9 rounded-full bg-red-600 border-2 border-yellow-300 flex items-center justify-center shadow-lg absolute text-xs">
+                                        🌸
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- Diya Flame -->
+                            <div id="diyaContainer" class="absolute bottom-6 flex flex-col items-center transition-all duration-300 opacity-40">
+                                <div id="diyaFlame" class="hidden w-5 h-8 bg-gradient-to-t from-red-500 via-amber-400 to-yellow-200 rounded-full animate-flame"></div>
+                                <div class="w-14 h-6 bg-amber-700 rounded-b-full border-t border-amber-500 shadow-md"></div>
+                            </div>
+
+                            <!-- Sweet Bite Effect -->
+                            <div id="sweetEffect" class="hidden absolute top-8 text-4xl animate-bounce">
+                                🍬
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Step Action Controls -->
+                    <div class="space-y-4">
+                        <div id="actionCard1" class="p-4 rounded-2xl bg-white border-2 border-amber-400 shadow-sm flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-3xl">🪔</span>
+                                <div>
+                                    <h3 class="font-bold text-gray-800">Step 1: Light the Diya</h3>
+                                    <p class="text-xs text-gray-500">Ignite auspicious flame for <span class="font-handwriting text-base font-bold text-festive-crimson">Jeetendra Bhai</span>.</p>
+                                </div>
+                            </div>
+                            <button onclick="performPoojaStep(1)" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-xl text-sm transition">
+                                Light Diya
+                            </button>
+                        </div>
+
+                        <div id="actionCard2" class="p-4 rounded-2xl bg-white border border-gray-200 shadow-sm flex items-center justify-between opacity-50 pointer-events-none">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-3xl">🔴</span>
+                                <div>
+                                    <h3 class="font-bold text-gray-800">Step 2: Apply Roli & Chawal</h3>
+                                    <p class="text-xs text-gray-500">Apply sacred red tilak on <span class="font-handwriting text-base font-bold text-festive-crimson">Jeetendra Bhai's</span> forehead.</p>
+                                </div>
+                            </div>
+                            <button onclick="performPoojaStep(2)" class="px-4 py-2 bg-festive-red hover:bg-festive-crimson text-white font-semibold rounded-xl text-sm transition">
+                                Apply Tilak
+                            </button>
+                        </div>
+
+                        <div id="actionCard3" class="p-4 rounded-2xl bg-white border border-gray-200 shadow-sm flex items-center justify-between opacity-50 pointer-events-none">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-3xl">🍬</span>
+                                <div>
+                                    <h3 class="font-bold text-gray-800">Step 3: Offer Sweets</h3>
+                                    <p class="text-xs text-gray-500">Feed delicious Laddoo/Kaju Katli to <span class="font-handwriting text-base font-bold text-festive-crimson">Jeetendra Bhai</span>.</p>
+                                </div>
+                            </div>
+                            <button onclick="performPoojaStep(3)" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-xl text-sm transition">
+                                Feed Sweet
+                            </button>
+                        </div>
+
+                        <div id="actionCard4" class="p-4 rounded-2xl bg-white border border-gray-200 shadow-sm flex items-center justify-between opacity-50 pointer-events-none">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-3xl">🪡</span>
+                                <div>
+                                    <h3 class="font-bold text-gray-800">Step 4: Tie Sacred Rakhi & Play Song</h3>
+                                    <p class="text-xs text-gray-500">Tie thread & play a song !</p>
+                                </div>
+                            </div>
+                            <button onclick="performPoojaStep(4)" class="px-4 py-2 bg-festive-red hover:bg-festive-crimson text-white font-semibold rounded-xl text-sm transition">
+                                Tie Rakhi & Play Song 🎵
+                            </button>
+                        </div>
+
+                        <div class="text-right pt-2">
+                            <button onclick="resetPoojaRitual()" class="text-xs text-festive-crimson hover:underline font-semibold">
+                                🔄 Reset Pooja Ritual
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NOW PLAYING OFFICIAL YOUTUBE SONG PLAYER BANNER -->
+                <div id="songBanner" class="hidden mt-8 p-4 sm:p-6 rounded-2xl bg-gradient-to-r from-rose-900 via-festive-crimson to-amber-700 text-white shadow-xl border-2 border-amber-300">
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-3xl sm:text-4xl animate-bounce">🎵</span>
+                            <div>
+                                <span class="text-xs uppercase tracking-widest text-amber-300 font-bold block">Official Raksha Bandhan Song</span>
+                                <h4 class="font-bold text-lg sm:text-xl text-amber-100">Arijit Singh - Dhaagon Se Baandhaa 🪔</h4>
+                                <p class="text-xs text-amber-200/80">From movie Raksha Bandhan | Akshay Kumar & Bhumi Pednekar</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-2">
+                            <div class="flex items-end space-x-1 h-6">
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 30 SECOND LOCAL SONG PLAYER -->
+                    <div class="relative w-full aspect-video rounded-xl overflow-hidden shadow-2xl border border-amber-400/50 bg-black flex items-center justify-center">
+                        <audio id="rakhiSong" src="music/song.mp3"></audio>
+                        <button id="startSongButton" onclick="startRakhiSong()" class="px-8 py-4 bg-gradient-to-r from-festive-red to-amber-500 text-white font-bold rounded-full shadow-lg hover:scale-105 transition transform">
+                            🎵 Start Song
+                        </button>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- 2. DIY Rakhi Designer Studio -->
+            <section id="diy-rakhi" class="glass-card rounded-3xl p-6 sm:p-10 border border-amber-200 shadow-lg">
+                <div class="text-center mb-8">
+                    <span class="text-xs font-bold uppercase tracking-widest text-festive-amber">Creative Studio</span>
+                    <h2 class="text-3xl sm:text-4xl font-festive text-festive-crimson mt-1">Design Rakhi For <span class="font-handwriting text-4xl text-festive-amber">Jeetendra Bhai</span></h2>
+                    <p class="text-sm sm:text-base text-gray-600 mt-2">Customize colors, shapes, emblems & initials specifically for <span class="font-handwriting text-lg text-festive-crimson font-bold">Jeetendra Bhai</span>.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <!-- Rakhi Preview Area -->
+                    <div class="lg:col-span-6 flex flex-col items-center">
+                        <div class="w-full max-w-sm h-80 bg-gradient-to-b from-amber-50 to-orange-100 rounded-3xl border-2 border-amber-300 shadow-inner p-4 flex flex-col items-center justify-center relative overflow-hidden">
+                            
+                            <!-- SVG Dynamic Rakhi Rendering -->
+                            <svg id="rakhiSvg" class="w-72 h-72 drop-shadow-xl" viewBox="0 0 300 300">
+                                <path id="svgThread" d="M 10,150 Q 150,110 290,150" stroke="#FF0055" stroke-width="8" stroke-linecap="round" fill="none"/>
+                                <path id="svgThreadZari" d="M 10,150 Q 150,110 290,150" stroke="#FFB703" stroke-width="3" stroke-dasharray="6,6" fill="none"/>
+
+                                <g id="svgBaseGroup" transform="translate(150, 150)">
+                                    <circle id="svgBaseShape" r="60" fill="#D90429" stroke="#FFB703" stroke-width="4"/>
+                                </g>
+
+                                <g id="svgCharmGroup" transform="translate(150, 150)">
+                                    <circle r="32" fill="#FFB703" stroke="#9D0208" stroke-width="2"/>
+                                    <text id="svgCharmIcon" x="0" y="8" font-size="28" text-anchor="middle" dominant-baseline="central">👑</text>
+                                </g>
+
+                                <g id="svgTextGroup" transform="translate(150, 150)">
+                                    <text id="svgCustomText" x="0" y="48" font-size="12" font-weight="bold" fill="#640D14" text-anchor="middle">JEETENDRA</text>
+                                </g>
+                            </svg>
+
+                        </div>
+                        
+                        <div class="flex gap-3 mt-4">
+                            <button onclick="downloadRakhiSVG()" class="px-5 py-2.5 bg-festive-red hover:bg-festive-crimson text-white text-sm font-semibold rounded-xl shadow transition flex items-center gap-2">
+                                <i class="fas fa-download"></i> Save Rakhi
+                            </button>
+                            <button onclick="randomizeRakhi()" class="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold rounded-xl shadow transition flex items-center gap-2">
+                                <i class="fas fa-random"></i> Surprise Me
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Customization Controls -->
+                    <div class="lg:col-span-6 space-y-6">
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-gray-500 mb-2">1. Select Base Shape</label>
+                            <div class="grid grid-cols-4 gap-2">
+                                <button onclick="setRakhiBase('circle')" class="p-2.5 rounded-xl border border-amber-300 hover:bg-amber-100 font-medium text-xs text-center transition">🟡 Circle</button>
+                                <button onclick="setRakhiBase('flower')" class="p-2.5 rounded-xl border border-amber-300 hover:bg-amber-100 font-medium text-xs text-center transition">🌸 Floral</button>
+                                <button onclick="setRakhiBase('star')" class="p-2.5 rounded-xl border border-amber-300 hover:bg-amber-100 font-medium text-xs text-center transition">⭐ Star</button>
+                                <button onclick="setRakhiBase('diamond')" class="p-2.5 rounded-xl border border-amber-300 hover:bg-amber-100 font-medium text-xs text-center transition">🔷 Diamond</button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-gray-500 mb-2">2. Pick Base Color</label>
+                            <div class="flex space-x-3">
+                                <button onclick="setRakhiColor('#D90429')" class="w-9 h-9 rounded-full bg-red-600 ring-2 ring-offset-2 ring-transparent focus:ring-red-500 shadow"></button>
+                                <button onclick="setRakhiColor('#FB8500')" class="w-9 h-9 rounded-full bg-orange-500 ring-2 ring-offset-2 ring-transparent focus:ring-orange-400 shadow"></button>
+                                <button onclick="setRakhiColor('#FFB703')" class="w-9 h-9 rounded-full bg-yellow-400 ring-2 ring-offset-2 ring-transparent focus:ring-yellow-300 shadow"></button>
+                                <button onclick="setRakhiColor('#023E8A')" class="w-9 h-9 rounded-full bg-blue-800 ring-2 ring-offset-2 ring-transparent focus:ring-blue-600 shadow"></button>
+                                <button onclick="setRakhiColor('#2A9D8F')" class="w-9 h-9 rounded-full bg-teal-600 ring-2 ring-offset-2 ring-transparent focus:ring-teal-400 shadow"></button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-gray-500 mb-2">3. Center Emblem Charm</label>
+                            <div class="grid grid-cols-5 gap-2 text-xl">
+                                <button onclick="setRakhiCharm('👑')" class="p-2 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200">👑</button>
+                                <button onclick="setRakhiCharm('🪔')" class="p-2 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200">🪔</button>
+                                <button onclick="setRakhiCharm('🕉️')" class="p-2 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200">🕉️</button>
+                                <button onclick="setRakhiCharm('🦚')" class="p-2 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200">🦚</button>
+                                <button onclick="setRakhiCharm('⭐')" class="p-2 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200">⭐</button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-gray-500 mb-2">4. Custom Text / Name</label>
+                            <input type="text" id="rakhiTextInput" oninput="updateRakhiText(this.value)" value="JEETENDRA" placeholder="e.g. JEETENDRA, BRO" maxlength="12" class="w-full px-4 py-2.5 rounded-xl border border-amber-300 focus:outline-none focus:ring-2 focus:ring-festive-red bg-white text-sm">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. Scratch Card Surprise -->
+            <section id="scratch-card" class="glass-card rounded-3xl p-6 sm:p-10 border border-amber-200 shadow-lg text-center">
+                <span class="text-xs font-bold uppercase tracking-widest text-festive-amber">Brother's Gift</span>
+                <h2 class="text-3xl sm:text-4xl font-festive text-festive-crimson mt-1">Scratch & Reveal Blessing</h2>
+                <p class="text-sm text-gray-600 mt-2 mb-8">Hey <span class="font-handwriting text-xl text-festive-crimson font-bold">Jeetendra Bhai</span>! Scratch off the golden foil to uncover your secret Raksha Bandhan surprise gift!</p>
+
+                <div class="relative w-72 h-44 sm:w-96 sm:h-56 mx-auto rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-300">
+                    <div class="absolute inset-0 bg-gradient-to-br from-rose-500 to-festive-crimson flex flex-col items-center justify-center p-4 text-white">
+                        <span class="text-4xl mb-1">🎁</span>
+                        <h3 id="scratchRewardTitle" class="font-festive text-xl sm:text-2xl text-amber-200 font-bold">1 Free Meal Treatment!</h3>
+                        <p id="scratchRewardDesc" class="text-xs sm:text-sm text-amber-100 mt-1">Valid for <span class="font-handwriting text-base font-bold text-yellow-200">Jeetendra Bhai</span> anytime this month!</p>
+                    </div>
+
+                    <canvas id="scratchCanvas" class="absolute inset-0 w-full h-full cursor-pointer z-10"></canvas>
+                </div>
+
+                <div class="mt-6">
+                    <button onclick="initScratchCard()" class="px-5 py-2 bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold rounded-xl shadow transition">
+                        🔄 Reset Scratch Card
+                    </button>
+                </div>
+            </section>
+
+            <!-- 4. Interactive Sibling Coupons -->
+            <section id="coupons" class="glass-card rounded-3xl p-6 sm:p-10 border border-amber-200 shadow-lg">
+                <div class="text-center mb-8">
+                    <span class="text-xs font-bold uppercase tracking-widest text-festive-amber">Promises For Jeetendra Bhai</span>
+                    <h2 class="text-3xl sm:text-4xl font-festive text-festive-crimson mt-1">Vouchers For <span class="font-handwriting text-4xl text-festive-amber">Jeetendra Bhai</span></h2>
+                    <p class="text-sm text-gray-600 mt-2">Click to claim these fun sibling privilege cards!</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-gradient-to-br from-amber-50 to-orange-100 rounded-2xl p-5 border-2 border-dashed border-amber-400 relative overflow-hidden shadow">
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="text-3xl">📺</span>
+                            <span class="text-xs font-bold px-2 py-1 bg-amber-200 text-amber-800 rounded-md">JEETENDRA BHAI #1</span>
+                        </div>
+                        <h3 class="font-bold text-gray-800 text-lg">TV Remote Control Pass</h3>
+                        <p class="text-xs text-gray-600 mt-1">Full rights for <span class="font-handwriting text-base font-bold text-festive-crimson">Jeetendra Bhai</span> to control TV remote for 1 whole evening without fights.</p>
+                        <button onclick="claimCoupon(this, 'TV Remote Pass')" class="mt-4 w-full py-2 bg-festive-red hover:bg-festive-crimson text-white text-xs font-bold uppercase tracking-wider rounded-xl transition">
+                            Claim Coupon
+                        </button>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-amber-50 to-orange-100 rounded-2xl p-5 border-2 border-dashed border-amber-400 relative overflow-hidden shadow">
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="text-3xl">🧹</span>
+                            <span class="text-xs font-bold px-2 py-1 bg-amber-200 text-amber-800 rounded-md">JEETENDRA BHAI #2</span>
+                        </div>
+                        <h3 class="font-bold text-gray-800 text-lg">Chore Exemption Card</h3>
+                        <p class="text-xs text-gray-600 mt-1">Pass 1 household chore duty directly to your sister with no questions asked.</p>
+                        <button onclick="claimCoupon(this, 'Chore Exemption')" class="mt-4 w-full py-2 bg-festive-red hover:bg-festive-crimson text-white text-xs font-bold uppercase tracking-wider rounded-xl transition">
+                            Claim Coupon
+                        </button>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-amber-50 to-orange-100 rounded-2xl p-5 border-2 border-dashed border-amber-400 relative overflow-hidden shadow">
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="text-3xl">🍕</span>
+                            <span class="text-xs font-bold px-2 py-1 bg-amber-200 text-amber-800 rounded-md">JEETENDRA BHAI #3</span>
+                        </div>
+                        <h3 class="font-bold text-gray-800 text-lg">Favorite Dish Treat</h3>
+                        <p class="text-xs text-gray-600 mt-1">Guaranteed share of secret snacks or a home-made favorite dish request!</p>
+                        <button onclick="claimCoupon(this, 'Favorite Dish Treat')" class="mt-4 w-full py-2 bg-festive-red hover:bg-festive-crimson text-white text-xs font-bold uppercase tracking-wider rounded-xl transition">
+                            Claim Coupon
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. REALISTIC HANDWRITTEN WISH LETTER -->
+            <section id="letter" class="glass-card rounded-3xl p-6 sm:p-10 border border-amber-200 shadow-lg">
+                <div class="text-center mb-8">
+                    <span class="text-xs font-bold uppercase tracking-widest text-festive-amber">From My Heart</span>
+                    <h2 class="text-3xl sm:text-4xl font-festive text-festive-crimson mt-1">Wish Letter for <span class="font-handwriting text-4xl text-festive-amber">Jeetendra Bhai</span></h2>
+                    <p class="text-sm text-gray-600 mt-2">A genuine, heartfelt handwritten letter written especially for my brother <span class="font-handwriting text-lg text-festive-crimson font-bold">Jeetendra Bhai</span>.</p>
+                </div>
+
+                <!-- Realistic Stationery Parchment Paper Letter (Centered) -->
+                <div class="max-w-3xl mx-auto">
+                    <div class="letter-paper rounded-3xl p-6 sm:p-10 border-2 border-amber-300 relative overflow-hidden flex flex-col justify-between min-h-[440px]">
+                        
+                        <!-- Authentic Red Wax Seal Stamp in top right corner -->
+                        <div class="absolute top-6 right-6 w-14 h-14 bg-gradient-to-br from-red-600 via-festive-crimson to-rose-900 rounded-full shadow-lg border-2 border-amber-300 flex items-center justify-center transform rotate-12">
+                            <span class="text-amber-200 text-xl font-bold">🪔</span>
+                        </div>
+
+                        <!-- Decorative Watermark Floral BG -->
+                        <div class="absolute bottom-4 left-4 text-7xl text-amber-900/5 select-none font-festive">
+                            🌸
+                        </div>
+
+                        <!-- Letter Header & Salutation -->
+                        <div>
+                            <div class="text-xs uppercase tracking-widest text-amber-700 font-bold mb-4 flex items-center gap-2">
+                                <span>💌</span> Raksha Bandhan Special Letter
+                            </div>
+                            
+                            <h3 id="previewTo" class="font-handwriting text-3xl sm:text-4xl text-festive-crimson font-bold mb-4">
+                                Dearest <span class="font-handwriting text-4xl text-festive-red">Jeetendra Bhai</span>,
+                            </h3>
+
+                            <!-- Letter Body Content -->
+                            <p id="previewBody" class="font-handwriting text-xl sm:text-2xl text-gray-800 leading-relaxed whitespace-pre-line">
+Happy Raksha Bandhan, <span class="font-handwriting text-2xl font-bold text-festive-crimson">Jeetendra Bhai</span>! 
+
+On this sacred day, I want to tell you how truly blessed I am to have you as my brother. Through every laughter, fight, and quiet moment, you have always stood by my side as a true shield and guide. 
+
+May God grant you endless happiness, prosperity, great health, and ultimate success in everything you do. No matter how far we are, the sacred thread of Rakhi keeps our hearts connected forever!
+                            </p>
+                        </div>
+
+                        <!-- Letter Footer Signature -->
+                        <div class="mt-8 pt-4 border-t border-amber-300/60 text-right">
+                            <span class="block text-xs text-amber-800 uppercase font-semibold tracking-wider">Forever Your Partner-In-Crime,</span>
+                            <span id="previewFrom" class="font-handwriting text-2xl sm:text-3xl text-festive-red font-bold">
+                                With all my love, Your Sister
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. Sibling Quiz Competition -->
+            <section id="quiz" class="glass-card rounded-3xl p-6 sm:p-10 border-2 border-amber-300 shadow-xl relative overflow-hidden">
+                <div class="absolute -top-12 -right-12 w-36 h-36 bg-amber-400/20 rounded-full blur-xl"></div>
+                
+                <div class="text-center mb-8">
+                    <span class="inline-block px-3 py-1 rounded-full bg-amber-100 text-festive-crimson text-xs font-bold uppercase tracking-widest mb-2">
+                        🎯 <span class="font-handwriting text-sm text-festive-red font-bold">Jeetendra Bhai</span> vs Sister Battle
+                    </span>
+                    <h2 class="text-3xl sm:text-5xl font-festive text-festive-crimson">Sibling Quiz Competition</h2>
+                    <p class="text-sm sm:text-base text-gray-600 mt-2 max-w-xl mx-auto">
+                        Test your Raksha Bandhan trivia knowledge or challenge <span class="font-handwriting text-lg text-festive-crimson font-bold">Jeetendra Bhai</span> in a custom battle quiz!
+                    </p>
+                </div>
+
+                <!-- Quiz Nav Tabs -->
+                <div class="flex justify-center border-b border-amber-200 mb-8">
+                    <button id="tabTriviaBtn" onclick="switchQuizTab('trivia')" class="px-6 py-3 font-semibold text-sm border-b-2 border-festive-red text-festive-red flex items-center gap-2">
+                        🏆 Festivity Trivia
+                    </button>
+                    <button id="tabCustomBtn" onclick="switchQuizTab('custom')" class="px-6 py-3 font-semibold text-sm border-b-2 border-transparent text-gray-500 hover:text-festive-crimson flex items-center gap-2">
+                        ✏️ Custom <span class="font-handwriting text-base font-bold">Jeetendra Bhai</span> Quiz
+                    </button>
+                </div>
+
+                <!-- TAB 1: TRIVIA QUIZ -->
+                <div id="quizTriviaContainer" class="max-w-2xl mx-auto">
+                    
+                    <!-- Start Screen -->
+                    <div id="quizStartScreen" class="text-center py-8 space-y-6">
+                        <div class="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto text-4xl shadow-inner border border-amber-300">
+                            ❓
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800"><span class="font-handwriting text-3xl text-festive-crimson font-bold">Jeetendra Bhai</span>, Are You Ready to Prove Your Sibling Bond?</h3>
+                        <p class="text-sm text-gray-600 max-w-md mx-auto">
+                            10 fun questions covering Raksha Bandhan traditions, sibling rivalries, and festive lore. Score points & win your Sibling Champion Certificate!
+                        </p>
+                        <button onclick="startTriviaQuiz()" class="px-8 py-3.5 bg-gradient-to-r from-festive-red to-amber-500 text-white font-bold rounded-full shadow-lg hover:scale-105 transition transform text-base">
+                            🚀 Start Trivia Quiz
+                        </button>
+                    </div>
+
+                    <!-- Active Question Screen -->
+                    <div id="quizQuestionScreen" class="hidden space-y-6">
+                        <div class="flex justify-between items-center text-xs font-bold text-gray-500">
+                            <span id="quizProgressText">Question 1 of 10</span>
+                            <span id="quizScoreText" class="text-festive-red">Score: 0</span>
+                        </div>
+
+                        <div class="bg-amber-50/70 p-6 rounded-2xl border border-amber-200 shadow-sm">
+                            <h4 id="quizQuestionTitle" class="text-lg font-bold text-gray-800">
+                                What does the word "Raksha Bandhan" literally translate to in Sanskrit?
+                            </h4>
+                        </div>
+
+                        <div id="quizOptionsContainer" class="grid grid-cols-1 gap-3">
+                        </div>
+
+                        <div id="quizFeedback" class="hidden p-3 rounded-xl text-xs font-semibold text-center"></div>
+                    </div>
+
+                    <!-- Quiz Completion Scoreboard -->
+                    <div id="quizResultScreen" class="hidden text-center py-6 space-y-6">
+                        <div class="w-24 h-24 bg-gradient-to-tr from-yellow-300 to-amber-500 rounded-full flex items-center justify-center mx-auto text-5xl shadow-xl border-4 border-white">
+                            🏆
+                        </div>
+                        <div>
+                            <h3 class="text-3xl font-festive text-festive-crimson">Quiz Completed!</h3>
+                            <p id="finalScoreText" class="text-xl font-bold text-gray-800 mt-2"><span class="font-handwriting text-2xl text-festive-red font-bold">Jeetendra Bhai</span> scored 8 out of 10!</p>
+                            <p id="finalBadgeTitle" class="text-sm font-semibold text-festive-amber mt-1">👑 Badge: Ultimate Sibling Master</p>
+                        </div>
+
+                        <div class="flex justify-center gap-4">
+                            <button onclick="openCertificateModal()" class="px-6 py-2.5 bg-festive-red text-white text-sm font-semibold rounded-xl shadow hover:bg-festive-crimson transition">
+                                📜 View Certificate
+                            </button>
+                            <button onclick="startTriviaQuiz()" class="px-6 py-2.5 bg-amber-500 text-white text-sm font-semibold rounded-xl shadow hover:bg-amber-600 transition">
+                                🔄 Play Again
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- TAB 2: CUSTOM SIBLING BATTLE QUIZ -->
+                <div id="quizCustomContainer" class="hidden max-w-2xl mx-auto space-y-6">
+                    <div class="bg-amber-50 p-6 rounded-2xl border border-amber-200 text-center">
+                        <h3 class="font-bold text-gray-800 text-lg">Custom Sibling Quiz for <span class="font-handwriting text-2xl text-festive-crimson font-bold">Jeetendra Bhai</span></h3>
+                        <p class="text-xs text-gray-600 mt-1">Fill in questions below, generate your code, and send it to your brother <span class="font-handwriting text-base text-festive-red font-bold">Jeetendra Bhai</span> to see how well he knows you!</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="p-4 bg-white rounded-xl border border-amber-200">
+                            <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Q1: Who gets scolded more at home?</label>
+                            <input type="text" id="customQ1" value="Who gets scolded more by mom?" class="w-full text-xs p-2 border rounded-lg mb-2">
+                            <div class="grid grid-cols-2 gap-2 text-xs">
+                                <input type="text" id="customQ1Opt1" value="Jeetendra Bhai" class="p-2 border rounded">
+                                <input type="text" id="customQ1Opt2" value="Sister" class="p-2 border rounded">
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-white rounded-xl border border-amber-200">
+                            <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Q2: Who steals secret snacks?</label>
+                            <input type="text" id="customQ2" value="Who steals snacks late at night?" class="w-full text-xs p-2 border rounded-lg mb-2">
+                            <div class="grid grid-cols-2 gap-2 text-xs">
+                                <input type="text" id="customQ2Opt1" value="Jeetendra Bhai" class="p-2 border rounded">
+                                <input type="text" id="customQ2Opt2" value="Sister" class="p-2 border rounded">
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-white rounded-xl border border-amber-200">
+                            <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Q3: Who takes longer to get ready?</label>
+                            <input type="text" id="customQ3" value="Who takes 2 hours to get ready?" class="w-full text-xs p-2 border rounded-lg mb-2">
+                            <div class="grid grid-cols-2 gap-2 text-xs">
+                                <input type="text" id="customQ3Opt1" value="Jeetendra Bhai" class="p-2 border rounded">
+                                <input type="text" id="customQ3Opt2" value="Sister" class="p-2 border rounded">
+                            </div>
+                        </div>
+
+                        <button onclick="generateCustomQuizShareCode()" class="w-full py-3 bg-festive-red hover:bg-festive-crimson text-white font-bold rounded-xl shadow text-sm transition">
+                            ✨ Generate Challenge Code For Jeetendra Bhai
+                        </button>
+
+                        <div id="customShareResult" class="hidden p-4 bg-amber-100 rounded-xl border border-amber-300 text-center space-y-2">
+                            <p class="text-xs font-bold text-amber-900">Copy & Send This Code To Jeetendra Bhai:</p>
+                            <input type="text" id="shareCodeBox" readonly class="w-full p-2 bg-white text-center font-mono text-xs border rounded-lg">
+                            <button onclick="copyShareCode()" class="px-4 py-1.5 bg-amber-600 text-white text-xs font-bold rounded-lg hover:bg-amber-700">
+                                📋 Copy Code
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Certificate Modal -->
+    <div id="certModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full border-4 border-amber-300 shadow-2xl relative">
+            <button onclick="closeCertificateModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-xl font-bold">✕</button>
+            
+            <div class="text-center space-y-4 border-4 border-double border-amber-400 p-6 rounded-2xl bg-amber-50">
+                <span class="text-4xl">👑</span>
+                <h3 class="font-festive text-2xl sm:text-3xl text-festive-crimson">Certificate of Excellence</h3>
+                <p class="text-xs uppercase tracking-widest text-amber-700 font-bold">Presented To</p>
+                <input type="text" id="certPlayerName" value="Jeetendra Bhai" class="text-center font-handwriting font-bold text-3xl text-festive-crimson border-b border-amber-400 focus:outline-none bg-transparent w-full">
+                
+                <p class="text-xs text-gray-600 italic">
+                    For being the most incredible brother, mastering Raksha Bandhan trivia, and demonstrating everlasting sibling love!
+                </p>
+
+                <div class="pt-4 flex justify-between items-center text-xs font-semibold text-amber-800 border-t border-amber-200">
+                    <span>Date: <span id="certDate">August 2026</span></span>
+                    <span>Rakhi Festivities 🪔</span>
+                </div>
+            </div>
+
+            <div class="mt-4 text-center">
+                <button onclick="window.print()" class="px-6 py-2 bg-festive-red text-white text-xs font-bold rounded-xl shadow hover:bg-festive-crimson">
+                    🖨️ Print / Save PDF
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 px-5 py-3 rounded-2xl bg-gray-900 text-white text-sm font-medium shadow-2xl flex items-center space-x-2">
+        <span id="toastIcon">✨</span>
+        <span id="toastMsg">Action completed successfully!</span>
+    </div>
+
+    <!-- Application Script Logic -->
+    <script>
+        /* -------------------------------------------------------------
+         * 0. GIFT WRAP REVEAL ANIMATION CONTROLLER
+         * ------------------------------------------------------------- */
+        let isUnwrapping = false;
+
+        function unwrapGift() {
+            if (isUnwrapping) return;
+            isUnwrapping = true;
+
+            playSoundEffect('sparkle');
+
+            const prompt = document.getElementById('giftPrompt');
+            prompt.style.opacity = '0';
+            prompt.style.transform = 'translateY(15px)';
+
+            document.getElementById('bowKnot').classList.add('unravel-bow');
+            document.getElementById('ribbonV').classList.add('unravel-ribbon-v');
+            document.getElementById('ribbonH').classList.add('unravel-ribbon-h');
+
+            setTimeout(() => {
+                playSoundEffect('bell');
+                document.getElementById('flapTop').classList.add('unfold-top');
+                document.getElementById('flapBottom').classList.add('unfold-bottom');
+                document.getElementById('flapLeft').classList.add('unfold-left');
+                document.getElementById('flapRight').classList.add('unfold-right');
+            }, 350);
+
+            setTimeout(() => {
+                burstGoldSparkles();
+            }, 600);
+
+            setTimeout(() => {
+                const overlay = document.getElementById('giftOverlay');
+                const website = document.getElementById('mainWebsite');
+                
+                overlay.style.opacity = '0';
+                overlay.style.pointerEvents = 'none';
+
+                website.classList.remove('opacity-0');
+                website.classList.add('website-entry');
+
+                playSoundEffect('success');
+                showToast('Welcome Jeetendra Bhai!', '🪔');
+
+                setTimeout(() => {
+                    overlay.classList.add('hidden');
+                }, 700);
+            }, 1000);
+        }
+
+        function replayGiftAnimation() {
+            const overlay = document.getElementById('giftOverlay');
+            const website = document.getElementById('mainWebsite');
+            
+            overlay.classList.remove('hidden');
+            overlay.style.opacity = '1';
+            overlay.style.pointerEvents = 'auto';
+
+            document.getElementById('bowKnot').classList.remove('unravel-bow');
+            document.getElementById('ribbonV').classList.remove('unravel-ribbon-v');
+            document.getElementById('ribbonH').classList.remove('unravel-ribbon-h');
+            document.getElementById('flapTop').classList.remove('unfold-top');
+            document.getElementById('flapBottom').classList.remove('unfold-bottom');
+            document.getElementById('flapLeft').classList.remove('unfold-left');
+            document.getElementById('flapRight').classList.remove('unfold-right');
+
+            const prompt = document.getElementById('giftPrompt');
+            prompt.style.opacity = '1';
+            prompt.style.transform = 'translateY(0)';
+
+            website.classList.add('opacity-0');
+            website.classList.remove('website-entry');
+
+            isUnwrapping = false;
+        }
+
+        function burstGoldSparkles() {
+            for (let i = 0; i < 25; i++) {
+                const p = new Petal();
+                p.x = window.innerWidth / 2;
+                p.y = window.innerHeight / 2;
+                p.speedX = (Math.random() - 0.5) * 12;
+                p.speedY = (Math.random() - 0.5) * 12;
+                p.color = Math.random() > 0.3 ? '#FFB703' : '#FB8500';
+                particles.push(p);
+            }
+        }
+
+        /* -------------------------------------------------------------
+         * 1. Dynamic Petal Background Canvas
+         * ------------------------------------------------------------- */
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Petal {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = -20;
+                this.size = Math.random() * 8 + 6;
+                this.speedY = Math.random() * 1.5 + 0.8;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.rotation = Math.random() * 360;
+                this.rotSpeed = Math.random() * 2 - 1;
+                this.color = Math.random() > 0.5 ? '#FFB703' : '#D90429';
+            }
+            update() {
+                this.y += this.speedY;
+                this.x += this.speedX;
+                this.rotation += this.rotSpeed;
+                if (this.y > canvas.height + 20) {
+                    this.reset();
+                }
+            }
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate((this.rotation * Math.PI) / 180);
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.ellipse(0, 0, this.size, this.size / 2, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        for (let i = 0; i < 35; i++) {
+            particles.push(new Petal());
+        }
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateCanvas);
+        }
+        animateCanvas();
+
+        /* -------------------------------------------------------------
+         * 2. Navigation & Utility Functions
+         * ------------------------------------------------------------- */
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('mobileMenu').classList.add('hidden');
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        function showToast(msg, icon = '✨') {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = msg;
+            document.getElementById('toastIcon').innerText = icon;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        /* -------------------------------------------------------------
+         * 3. Web Audio Synthesizer & Sound Effects
+         * ------------------------------------------------------------- */
+        let audioCtx = null;
+        let audioMuted = false;
+
+        function playSoundEffect(type) {
+            if (audioMuted) return;
+            try {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                if (type === 'bell') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.2);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 1.2);
+                } else if (type === 'sparkle') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(1046.50, audioCtx.currentTime + 0.4);
+                    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.4);
+                } else if (type === 'success') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+                    osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.15);
+                    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.5);
+                }
+            } catch (e) {}
+        }
+
+        function toggleBackgroundAudio() {
+            audioMuted = !audioMuted;
+            const btn = document.getElementById('audioToggle');
+            btn.innerHTML = audioMuted ? '<i class="fas fa-volume-mute"></i>' : '<i class="fas fa-volume-up"></i>';
+            showToast(audioMuted ? 'Audio Muted' : 'Audio Enabled', audioMuted ? '🔇' : '🔔');
+        }
+
+        /* -------------------------------------------------------------
+         * 4. Virtual 4-Step Pooja Ritual State Machine
+         * ------------------------------------------------------------- */
+        let currentPoojaStep = 1;
+
+        function performPoojaStep(step) {
+            if (step !== currentPoojaStep) return;
+
+            if (step === 1) {
+                document.getElementById('diyaFlame').classList.remove('hidden');
+                document.getElementById('diyaContainer').classList.remove('opacity-40');
+                playSoundEffect('bell');
+                showToast('Diya Lighted! Auspicious flame ignited.', '🪔');
+                enableNextPoojaStep(2);
+            } else if (step === 2) {
+                const tilak = document.getElementById('tilakMark');
+                tilak.classList.remove('hidden');
+                setTimeout(() => tilak.classList.remove('scale-0'), 50);
+                playSoundEffect('sparkle');
+                showToast('Tilak Applied on Jeetendra Bhai!', '🔴');
+                enableNextPoojaStep(3);
+            } else if (step === 3) {
+                const sweet = document.getElementById('sweetEffect');
+                sweet.classList.remove('hidden');
+                setTimeout(() => sweet.classList.add('hidden'), 2000);
+                playSoundEffect('sparkle');
+                showToast('Sweets offered to Jeetendra Bhai!', '🍬');
+                enableNextPoojaStep(4);
+            } else if (step === 4) {
+                const rakhi = document.getElementById('wristRakhi');
+                rakhi.classList.remove('hidden');
+                setTimeout(() => rakhi.classList.remove('scale-0'), 50);
+                
+                // Show the song button after the virtual Rakhi is tied
+                document.getElementById('songBanner').classList.remove('hidden');
+
+                showToast('Rakhi Tied! 🎵 Your special song is ready', '🌸');
+                document.getElementById('poojaProgressBar').style.width = '100%';
+            }
+        }
+
+        let rakhiSongTimer = null;
+
+        function startRakhiSong() {
+            const song = document.getElementById('rakhiSong');
+            const button = document.getElementById('startSongButton');
+            if (!song) return;
+
+            if (rakhiSongTimer) {
+                clearTimeout(rakhiSongTimer);
+            }
+
+            song.currentTime = 0;
+            song.play().then(() => {
+                button.innerHTML = '🎵 Playing Song...';
+            }).catch(() => {
+                showToast('Please tap Start Song again', '🎵');
+            });
+
+            rakhiSongTimer = setTimeout(() => {
+                song.pause();
+                song.currentTime = 0;
+                button.innerHTML = '🎵 Start Song';
+            }, 30000);
+        }
+
+        function enableNextPoojaStep(nextStep) {
+            currentPoojaStep = nextStep;
+            document.getElementById(`actionCard${nextStep-1}`).classList.add('opacity-60');
+            const nextCard = document.getElementById(`actionCard${nextStep}`);
+            nextCard.classList.remove('opacity-50', 'pointer-events-none');
+            nextCard.classList.add('border-amber-400');
+            
+            const pct = ((nextStep - 1) / 3) * 100;
+            document.getElementById('poojaProgressBar').style.width = `${pct}%`;
+            document.getElementById(`stepLabel${nextStep}`).classList.add('text-festive-red');
+        }
+
+        function resetPoojaRitual() {
+            currentPoojaStep = 1;
+            document.getElementById('diyaFlame').classList.add('hidden');
+            document.getElementById('diyaContainer').classList.add('opacity-40');
+            document.getElementById('tilakMark').classList.add('hidden', 'scale-0');
+            document.getElementById('wristRakhi').classList.add('hidden', 'scale-0');
+            
+            const rakhiSong = document.getElementById('rakhiSong');
+            if (rakhiSong) {
+                rakhiSong.pause();
+                rakhiSong.currentTime = 0;
+            }
+            document.getElementById('songBanner').classList.add('hidden');
+            document.getElementById('poojaProgressBar').style.width = '25%';
+
+            for (let i = 2; i <= 4; i++) {
+                const card = document.getElementById(`actionCard${i}`);
+                card.classList.add('opacity-50', 'pointer-events-none');
+                document.getElementById(`stepLabel${i}`).classList.remove('text-festive-red');
+            }
+            document.getElementById('actionCard1').classList.remove('opacity-60');
+            showToast('Pooja Ritual Reset', '🔄');
+        }
+
+        /* -------------------------------------------------------------
+         * 5. DIY Rakhi Designer Engine
+         * ------------------------------------------------------------- */
+        let rakhiState = {
+            base: 'circle',
+            color: '#D90429',
+            charm: '👑',
+            text: 'JEETENDRA'
+        };
+
+        function setRakhiBase(shape) {
+            rakhiState.base = shape;
+            const baseShape = document.getElementById('svgBaseShape');
+            if (shape === 'circle') {
+                baseShape.outerHTML = `<circle id="svgBaseShape" r="60" fill="${rakhiState.color}" stroke="#FFB703" stroke-width="4"/>`;
+            } else if (shape === 'flower') {
+                baseShape.outerHTML = `<path id="svgBaseShape" d="M 0,-65 C 20,-65 30,-45 45,-45 C 60,-45 65,-20 65,0 C 65,20 45,30 45,45 C 45,60 20,65 0,65 C -20,65 -30,45 -45,45 C -60,45 -65,20 -65,0 C -65,-20 -45,-30 -45,-45 C -45,-60 -20,-65 0,-65 Z" fill="${rakhiState.color}" stroke="#FFB703" stroke-width="4"/>`;
+            } else if (shape === 'star') {
+                baseShape.outerHTML = `<polygon id="svgBaseShape" points="0,-65 18,-20 65,-20 26,10 40,58 0,30 -40,58 -26,10 -65,-20 -18,-20" fill="${rakhiState.color}" stroke="#FFB703" stroke-width="4"/>`;
+            } else if (shape === 'diamond') {
+                baseShape.outerHTML = `<polygon id="svgBaseShape" points="0,-65 65,0 0,65 -65,0" fill="${rakhiState.color}" stroke="#FFB703" stroke-width="4"/>`;
+            }
+        }
+
+        function setRakhiColor(colorHex) {
+            rakhiState.color = colorHex;
+            const el = document.getElementById('svgBaseShape');
+            if (el) el.setAttribute('fill', colorHex);
+        }
+
+        function setRakhiCharm(icon) {
+            rakhiState.charm = icon;
+            document.getElementById('svgCharmIcon').textContent = icon;
+        }
+
+        function updateRakhiText(val) {
+            rakhiState.text = val.toUpperCase();
+            document.getElementById('svgCustomText').textContent = rakhiState.text;
+        }
+
+        function randomizeRakhi() {
+            const shapes = ['circle', 'flower', 'star', 'diamond'];
+            const colors = ['#D90429', '#FB8500', '#FFB703', '#023E8A', '#2A9D8F'];
+            const charms = ['👑', '🪔', '🕉️', '🦚', '⭐'];
+            
+            const rShape = shapes[Math.floor(Math.random() * shapes.length)];
+            const rColor = colors[Math.floor(Math.random() * colors.length)];
+            const rCharm = charms[Math.floor(Math.random() * charms.length)];
+
+            setRakhiColor(rColor);
+            setRakhiBase(rShape);
+            setRakhiCharm(rCharm);
+            playSoundEffect('sparkle');
+            showToast('Generated Random Rakhi!', '🎨');
+        }
+
+        function downloadRakhiSVG() {
+            const svgData = document.getElementById('rakhiSvg').outerHTML;
+            const blob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Jeetendra-Bhai-Rakhi.svg';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            showToast('Rakhi Design Saved!', '💾');
+        }
+
+        /* -------------------------------------------------------------
+         * 6. Scratch Card Overlay Logic
+         * ------------------------------------------------------------- */
+        function initScratchCard() {
+            const sCanvas = document.getElementById('scratchCanvas');
+            const sCtx = sCanvas.getContext('2d');
+            sCanvas.width = sCanvas.offsetWidth;
+            sCanvas.height = sCanvas.offsetHeight;
+
+            sCtx.fillStyle = '#C0C0C0';
+            sCtx.fillRect(0, 0, sCanvas.width, sCanvas.height);
+
+            sCtx.fillStyle = '#D4AF37';
+            sCtx.font = 'bold 16px Poppins';
+            sCtx.textAlign = 'center';
+            sCtx.fillText('✨ SCRATCH FOR JEETENDRA BHAI ✨', sCanvas.width / 2, sCanvas.height / 2);
+
+            let isScratching = false;
+
+            function scratch(e) {
+                if (!isScratching) return;
+                const rect = sCanvas.getBoundingClientRect();
+                const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
+                const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
+
+                sCtx.globalCompositeOperation = 'destination-out';
+                sCtx.beginPath();
+                sCtx.arc(x, y, 20, 0, Math.PI * 2);
+                sCtx.fill();
+            }
+
+            sCanvas.onmousedown = sCanvas.ontouchstart = () => isScratching = true;
+            sCanvas.onmouseup = sCanvas.ontouchend = () => isScratching = false;
+            sCanvas.onmousemove = sCanvas.ontouchmove = scratch;
+        }
+        window.onload = () => {
+            initScratchCard();
+        };
+
+        /* -------------------------------------------------------------
+         * 7. Coupon Management
+         * ------------------------------------------------------------- */
+        function claimCoupon(btn, title) {
+            btn.disabled = true;
+            btn.innerText = '✓ CLAIMED BY JEETENDRA BHAI';
+            btn.classList.remove('bg-festive-red', 'hover:bg-festive-crimson');
+            btn.classList.add('bg-emerald-600', 'cursor-default');
+            playSoundEffect('success');
+            showToast(`Coupon "${title}" Claimed!`, '🎫');
+        }
+
+        /* -------------------------------------------------------------
+         * 8. Sibling Quiz Competition Engine
+         * ------------------------------------------------------------- */
+        const triviaQuestions = [
+            {
+                q: "What does the word 'Raksha Bandhan' literally translate to in Sanskrit?",
+                options: ["Bond of Protection", "Festival of Lights", "Thread of Victory", "Sacred Promise"],
+                correct: 0
+            },
+            {
+                q: "Which historical queen sent a Rakhi to Emperor Humayun seeking protection?",
+                options: ["Rani Laxmibai", "Rani Karnavati", "Rani Padmini", "Raziya Sultana"],
+                correct: 1
+            },
+            {
+                q: "What sacred item is applied on the brother's forehead during the ritual?",
+                options: ["Haldi", "Roli & Chawal", "Chandan", "Kumkum alone"],
+                correct: 1
+            },
+            {
+                q: "What Hindu calendar month is Raksha Bandhan celebrated in?",
+                options: ["Kartik", "Chaitra", "Shravana", "Bhadrapada"],
+                correct: 2
+            },
+            {
+                q: "Who is the legendary sibling duo associated with Rakhi in mythology?",
+                options: ["Lord Krishna & Draupadi", "Ram & Sita", "Shiv & Parvati", "Arjun & Subhadra"],
+                correct: 0
+            },
+            {
+                q: "What classic Indian sweet is most popularly fed during Raksha Bandhan?",
+                options: ["Jalebi", "Laddoo / Kaju Katli", "Rasgulla", "Kheer"],
+                correct: 1
+            },
+            {
+                q: "What do brothers traditionally give sisters after tying the Rakhi?",
+                options: ["Gifts or Cash Blessings", "Flowers", "Homework", "Complaints"],
+                correct: 0
+            },
+            {
+                q: "Which deity's wrist did Goddess Laxmi tie a thread to for Lord Vishnu's return?",
+                options: ["King Bali", "Lord Indra", "Lord Brahma", "Ravan"],
+                correct: 0
+            },
+            {
+                q: "What is the ultimate rule of sibling remote control fights?",
+                options: ["Whoever holds it first rules", "Sister always wins", "Mom decides", "All of the above"],
+                correct: 3
+            },
+            {
+                q: "What is the main spirit of Raksha Bandhan?",
+                options: ["Unconditional Sibling Love", "Getting Gifts", "Eating Sweets", "Dressing up"],
+                correct: 0
+            }
+        ];
+
+        let quizIndex = 0;
+        let quizScore = 0;
+
+        function switchQuizTab(tab) {
+            const triviaCont = document.getElementById('quizTriviaContainer');
+            const customCont = document.getElementById('quizCustomContainer');
+            const triviaBtn = document.getElementById('tabTriviaBtn');
+            const customBtn = document.getElementById('tabCustomBtn');
+
+            if (tab === 'trivia') {
+                triviaCont.classList.remove('hidden');
+                customCont.classList.add('hidden');
+                triviaBtn.classList.add('border-festive-red', 'text-festive-red');
+                triviaBtn.classList.remove('border-transparent', 'text-gray-500');
+                customBtn.classList.remove('border-festive-red', 'text-festive-red');
+                customBtn.classList.add('border-transparent', 'text-gray-500');
+            } else {
+                triviaCont.classList.add('hidden');
+                customCont.classList.remove('hidden');
+                customBtn.classList.add('border-festive-red', 'text-festive-red');
+                customBtn.classList.remove('border-transparent', 'text-gray-500');
+                triviaBtn.classList.remove('border-festive-red', 'text-festive-red');
+                triviaBtn.classList.add('border-transparent', 'text-gray-500');
+            }
+        }
+
+        function startTriviaQuiz() {
+            quizIndex = 0;
+            quizScore = 0;
+            document.getElementById('quizStartScreen').classList.add('hidden');
+            document.getElementById('quizResultScreen').classList.add('hidden');
+            document.getElementById('quizQuestionScreen').classList.remove('hidden');
+            loadQuizQuestion();
+        }
+
+        function loadQuizQuestion() {
+            const current = triviaQuestions[quizIndex];
+            document.getElementById('quizProgressText').innerText = `Question ${quizIndex + 1} of ${triviaQuestions.length}`;
+            document.getElementById('quizScoreText').innerText = `Score: ${quizScore}`;
+            document.getElementById('quizQuestionTitle').innerText = current.q;
+
+            const optionsContainer = document.getElementById('quizOptionsContainer');
+            optionsContainer.innerHTML = '';
+            document.getElementById('quizFeedback').classList.add('hidden');
+
+            current.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full p-3 text-left rounded-xl border border-amber-300 hover:bg-amber-100 font-medium text-xs sm:text-sm text-gray-800 transition flex items-center justify-between";
+                btn.innerHTML = `<span>${opt}</span> <i class="far fa-circle text-amber-400"></i>`;
+                btn.onclick = () => handleQuizAnswer(idx, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function handleQuizAnswer(selectedIdx, btnEl) {
+            const current = triviaQuestions[quizIndex];
+            const feedback = document.getElementById('quizFeedback');
+            const allBtns = document.getElementById('quizOptionsContainer').children;
+            
+            for (let b of allBtns) b.disabled = true;
+
+            if (selectedIdx === current.correct) {
+                quizScore += 10;
+                btnEl.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900');
+                feedback.innerText = "✨ Correct! +10 Points";
+                feedback.className = "p-3 rounded-xl text-xs font-semibold text-center bg-emerald-100 text-emerald-800";
+                playSoundEffect('sparkle');
+            } else {
+                btnEl.classList.add('bg-red-100', 'border-red-500', 'text-red-900');
+                allBtns[current.correct].classList.add('bg-emerald-50', 'border-emerald-400');
+                feedback.innerText = `❌ Oops! Correct answer was: ${current.options[current.correct]}`;
+                feedback.className = "p-3 rounded-xl text-xs font-semibold text-center bg-red-100 text-red-800";
+            }
+            feedback.classList.remove('hidden');
+
+            setTimeout(() => {
+                quizIndex++;
+                if (quizIndex < triviaQuestions.length) {
+                    loadQuizQuestion();
+                } else {
+                    finishQuiz();
+                }
+            }, 1400);
+        }
+
+        function finishQuiz() {
+            document.getElementById('quizQuestionScreen').classList.add('hidden');
+            document.getElementById('quizResultScreen').classList.remove('hidden');
+            document.getElementById('finalScoreText').innerHTML = `<span class="font-handwriting text-2xl text-festive-red font-bold">Jeetendra Bhai</span> scored ${quizScore} out of ${triviaQuestions.length * 10} Points!`;
+            
+            let badge = "👑 Badge: Ultimate Sibling Master";
+            if (quizScore < 50) badge = "🌟 Badge: Growing Sibling Buddy";
+            else if (quizScore < 80) badge = "🥇 Badge: Festive Champion";
+            
+            document.getElementById('finalBadgeTitle').innerText = badge;
+            playSoundEffect('success');
+        }
+
+        function generateCustomQuizShareCode() {
+            const q1 = document.getElementById('customQ1').value;
+            const q2 = document.getElementById('customQ2').value;
+            const q3 = document.getElementById('customQ3').value;
+
+            const quizObject = { q1, q2, q3 };
+            const encoded = btoa(JSON.stringify(quizObject));
+            
+            document.getElementById('shareCodeBox').value = `RAKHI-JEETENDRA-${encoded.substring(0, 14)}`;
+            document.getElementById('customShareResult').classList.remove('hidden');
+            showToast('Jeetendra Bhai\'s Challenge Code Generated!', '✨');
+        }
+
+        function copyShareCode() {
+            const box = document.getElementById('shareCodeBox');
+            box.select();
+            document.execCommand('copy');
+            showToast('Code Copied to Clipboard!', '📋');
+        }
+
+        /* -------------------------------------------------------------
+         * 9. Certificate Modal Handlers
+         * ------------------------------------------------------------- */
+        function openCertificateModal() {
+            document.getElementById('certModal').classList.remove('hidden');
+        }
+        function closeCertificateModal() {
+            document.getElementById('certModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
